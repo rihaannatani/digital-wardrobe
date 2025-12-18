@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block content %}
+  <div class="card">
+    <div class="row" style="justify-content:space-between; align-items:center;">
+      <h2 style="margin:0;">Your Items ({{ items|length }})</h2>
+      <a href="/items/new"><button>Add Item</button></a>
+    </div>
+
+    {% if items|length == 0 %}
+      <p class="muted">No items yet. Add your first one.</p>
+    {% endif %}
+
+    {% for it in items %}
+      <div class="card">
+        <div class="row" style="justify-content:space-between; align-items:center;">
+          <div>
+            <strong>{{ it["name"] }}</strong>
+            <div class="muted">{{ it["category"] }} | {{ it["color_primary"] }}{% if it["color_secondary"] %}, {{ it["color_secondary"] }}{% endif %}</div>
+            <div class="muted">warmth {{ it["warmth"] }}/5 | formality {{ it["formality"] }}/5</div>
+          </div>
+
+          <form method="post" action="/items/{{ it['id'] }}/delete" onsubmit="return confirm('Delete this item?');">
+            <button class="danger" type="submit">Delete</button>
+          </form>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+{% endblock %}

@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block content %}
+  <div class="card">
+    <h2 style="margin-top:0;">Add Item</h2>
+    <form method="post" action="/items/new">
+      <label>Name</label>
+      <input name="name" required placeholder="Black hoodie" />
+
+      <label>Category</label>
+      <select name="category" required>
+        <option value="top">top</option>
+        <option value="bottom">bottom</option>
+        <option value="shoes">shoes</option>
+        <option value="outerwear">outerwear</option>
+        <option value="accessory">accessory</option>
+      </select>
+
+      <label>Primary color</label>
+      <input name="color_primary" required placeholder="black" />
+
+      <label>Secondary color (optional)</label>
+      <input name="color_secondary" placeholder="white" />
+
+      <label>Warmth (1-5)</label>
+      <input name="warmth" type="number" min="1" max="5" value="3" required />
+
+      <label>Formality (1-5)</label>
+      <input name="formality" type="number" min="1" max="5" value="3" required />
+
+      <label>Notes (optional)</label>
+      <textarea name="notes" rows="3" placeholder="Oversized fit"></textarea>
+
+      <div style="margin-top:14px;">
+        <button type="submit">Save</button>
+        <a href="/items" style="margin-left:10px;">Cancel</a>
+      </div>
+    </form>
+  </div>
+{% endblock %}

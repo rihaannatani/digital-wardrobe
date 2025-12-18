@@ -1,12 +1,23 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 from fastapi.responses import HTMLResponse
+from fastapi.templating import Jinja2Templates
+
+from app.db.database import init_db
+from app.routers.items import router as items_router
 
 app = FastAPI(title="Digital Wardrobe")
+templates = Jinja2Templates(directory="app/templates")
+
+@app.on_event("startup")
+def _startup():
+    init_db()
 
 @app.get("/health")
 def health():
     return {"ok": True}
 
 @app.get("/", response_class=HTMLResponse)
-def home():
-    return "<h1>Digital Wardrobe</h1><p>Running.</p>"
+def home(request: Request):
+    return templates.TemplateResponse("home.html", {"request": request, "title": "Home"})
+
+app.include_router(items_router)
