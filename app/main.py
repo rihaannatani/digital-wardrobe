@@ -4,8 +4,10 @@ from fastapi.templating import Jinja2Templates
 
 from app.db.database import init_db
 from app.routers.items import router as items_router
+from fastapi.staticfiles import StaticFiles
 
 app = FastAPI(title="Digital Wardrobe")
+app.mount("/static", StaticFiles(directory="app/static"), name="static")
 templates = Jinja2Templates(directory="app/templates")
 
 @app.on_event("startup")

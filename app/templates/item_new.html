@@ -2,7 +2,7 @@
 {% block content %}
   <div class="card">
     <h2 style="margin-top:0;">Add Item</h2>
-    <form method="post" action="/items/new">
+    <form method="post" action="/items/new" enctype="multipart/form-data">
       <label>Name</label>
       <input name="name" required placeholder="Black hoodie" />
 
@@ -29,6 +29,9 @@
 
       <label>Notes (optional)</label>
       <textarea name="notes" rows="3" placeholder="Oversized fit"></textarea>
+
+      <label>Photo (optional)</label>
+      <input type="file" name="image" accept="image/*" />
 
       <div style="margin-top:14px;">
         <button type="submit">Save</button>

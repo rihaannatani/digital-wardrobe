@@ -15,8 +15,17 @@
         <div class="row" style="justify-content:space-between; align-items:center;">
           <div>
             <strong>{{ it["name"] }}</strong>
-            <div class="muted">{{ it["category"] }} | {{ it["color_primary"] }}{% if it["color_secondary"] %}, {{ it["color_secondary"] }}{% endif %}</div>
-            <div class="muted">warmth {{ it["warmth"] }}/5 | formality {{ it["formality"] }}/5</div>
+            <div class="row" style="align-items:center;">
+              {% if it["image_path"] %}
+                <img src="{{ it['image_path'] }}" style="width:72px; height:72px; object-fit:cover; border-radius:10px;" />
+              {% endif %}
+
+              <div>
+                <strong>{{ it["name"] }}</strong>
+                <div class="muted">{{ it["category"] }} | {{ it["color_primary"] }}{% if it["color_secondary"] %}, {{ it["color_secondary"] }}{% endif %}</div>
+                <div class="muted">warmth {{ it["warmth"] }}/5 | formality {{ it["formality"] }}/5</div>
+              </div>
+            </div>
           </div>
           <div class="row" style="align-items:center;">
             <a href="/items/{{ it['id'] }}/edit"><button type="button">Edit</button></a>

@@ -10,11 +10,20 @@ def get_conn() -> sqlite3.Connection:
     conn.execute("PRAGMA foreign_keys = ON;")
     return conn
 
+def _ensure_columns(conn: sqlite3.Connection) -> None:
+    # Add columns to existing DBs without breaking anything
+    try:
+        conn.execute("ALTER TABLE items ADD COLUMN image_path TEXT;")
+    except sqlite3.OperationalError:
+        # column already exists (or table doesn't yet), ignore
+        pass
+
 def init_db() -> None:
     conn = get_conn()
     try:
         schema = SCHEMA_PATH.read_text(encoding="utf-8")
         conn.executescript(schema)
+        _ensure_columns(conn)
         conn.commit()
     finally:
         conn.close()
