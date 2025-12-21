@@ -21,3 +21,9 @@ def home(request: Request):
     return templates.TemplateResponse("home.html", {"request": request, "title": "Home"})
 
 app.include_router(items_router)
+
+from app.routers.outfits import router as outfits_router
+app.include_router(outfits_router)
+
+from app.routers.outfits_ui import router as outfits_ui_router
+app.include_router(outfits_ui_router)

@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block content %}
+  <div class="card">
+    <div class="row" style="justify-content:space-between; align-items:center;">
+      <h2 style="margin:0;">Saved History</h2>
+      <a href="/outfits">Back to shuffle</a>
+    </div>
+
+    {% if outfits|length == 0 %}
+      <p class="muted">No saved outfits yet.</p>
+    {% endif %}
+
+    {% for o in outfits %}
+      <div class="card">
+        <div class="muted">
+          #{{ o["meta"]["id"] }} | {{ o["meta"]["context"] }} | {{ o["meta"]["created_at"] }}
+        </div>
+        <ul>
+          {% for it in o["items"] %}
+            <li>
+              <strong>{{ it["slot"] }}</strong>:
+              {{ it["name"] }} ({{ it["category"] }}, {{ it["color_primary"] }})
+            </li>
+          {% endfor %}
+        </ul>
+      </div>
+    {% endfor %}
+  </div>
+{% endblock %}

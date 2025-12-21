@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block content %}
+  <div class="card">
+    <div class="row" style="justify-content:space-between; align-items:center;">
+      <h2 style="margin:0;">Outfit Shuffle</h2>
+      <a href="/history">History</a>
+    </div>
+
+    <form method="get" action="/outfits" style="margin-top:12px;">
+      <label>Context</label>
+      <select name="context">
+        {% for c in ["office","brunch","date","gym"] %}
+          <option value="{{ c }}" {% if c == context %}selected{% endif %}>{{ c }}</option>
+        {% endfor %}
+      </select>
+      <button type="submit" style="margin-left:10px;">Shuffle</button>
+    </form>
+
+    <hr/>
+
+    {% for o in outfits %}
+      <div class="card">
+        <h3 style="margin-top:0;">Option {{ loop.index }}</h3>
+
+        <ul>
+          {% for slot in slots %}
+            {% set it = o.get(slot) %}
+            <li>
+              <strong>{{ slot }}</strong>:
+              {% if it %}
+                {{ it["name"] }} ({{ it["color_primary"] }}, formality {{ it["formality"] }})
+              {% else %}
+                <span class="muted">none</span>
+              {% endif %}
+            </li>
+          {% endfor %}
+        </ul>
+
+        <form method="post" action="/outfits/save">
+          <input type="hidden" name="context" value="{{ context }}" />
+          {% for slot in slots %}
+            {% set it = o.get(slot) %}
+            {% if it %}
+              <input type="hidden" name="{{ slot }}_id" value="{{ it['id'] }}" />
+            {% endif %}
+          {% endfor %}
+          <button type="submit">Save this outfit</button>
+        </form>
+      </div>
+    {% endfor %}
+  </div>
+{% endblock %}
