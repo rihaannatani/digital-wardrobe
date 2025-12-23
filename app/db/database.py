@@ -27,3 +27,42 @@ def init_db() -> None:
         conn.commit()
     finally:
         conn.close()
+
+def _ensure_columns(conn: sqlite3.Connection) -> None:
+    # existing stuff...
+
+    # Add image_path to items (you already have this)
+    try:
+        conn.execute("ALTER TABLE items ADD COLUMN image_path TEXT;")
+    except sqlite3.OperationalError:
+        pass
+
+    # NEW: add locked_slots to outfits
+    try:
+        conn.execute("ALTER TABLE outfits ADD COLUMN locked_slots TEXT;")
+    except sqlite3.OperationalError:
+        pass
+    
+    try:
+        conn.execute("ALTER TABLE items ADD COLUMN color_hex TEXT;")
+    except Exception:
+        pass
+
+    try:
+        conn.execute("ALTER TABLE items ADD COLUMN color_h INTEGER;")
+    except Exception:
+        pass
+
+    try:
+        conn.execute("ALTER TABLE items ADD COLUMN color_s INTEGER;")
+    except Exception:
+        pass
+
+    try:
+        conn.execute("ALTER TABLE items ADD COLUMN color_l INTEGER;")
+    except Exception:
+        pass
+    try:
+        conn.execute("ALTER TABLE items ADD COLUMN color_hex TEXT;")
+    except Exception:
+        pass

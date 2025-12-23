@@ -19,11 +19,13 @@
               {% if it["image_path"] %}
                 <img src="{{ it['image_path'] }}" style="width:72px; height:72px; object-fit:cover; border-radius:10px;" />
               {% endif %}
-
               <div>
-                <strong>{{ it["name"] }}</strong>
                 <div class="muted">{{ it["category"] }} | {{ it["color_primary"] }}{% if it["color_secondary"] %}, {{ it["color_secondary"] }}{% endif %}</div>
                 <div class="muted">warmth {{ it["warmth"] }}/5 | formality {{ it["formality"] }}/5</div>
+                {% if it["color_hex"] %}
+                  <div class="muted">Hex: {{ it["color_hex"] }}</div>
+                {% endif %}
+
               </div>
             </div>
           </div>

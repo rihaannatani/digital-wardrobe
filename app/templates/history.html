@@ -12,17 +12,34 @@
 
     {% for o in outfits %}
       <div class="card">
-        <div class="muted">
-          #{{ o["meta"]["id"] }} | {{ o["meta"]["context"] }} | {{ o["meta"]["created_at"] }}
+        <div class="row" style="justify-content:space-between; align-items:center;">
+          <strong>Outfit #{{ o.meta["id"] }}</strong>
+          <div class="muted">{{ o.meta["context"] }} | {{ o.meta["created_at"] }}</div>
         </div>
-        <ul>
+
+        {% if o.meta.get("locked_slots") %}
+          <div class="muted" style="margin-top:6px;">Locked: {{ o.meta["locked_slots"] }}</div>
+        {% endif %}
+
+        <div style="margin-top:12px; display:grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap:12px;">
           {% for it in o["items"] %}
-            <li>
-              <strong>{{ it["slot"] }}</strong>:
-              {{ it["name"] }} ({{ it["category"] }}, {{ it["color_primary"] }})
-            </li>
+            <div class="card">
+              <div class="muted" style="text-transform:capitalize;">{{ it["slot"] }}</div>
+
+              {% if it["image_path"] %}
+                <img src="{{ it['image_path'] }}"
+                     style="width:100%; height:160px; object-fit:cover; border-radius:12px; margin-top:8px;" />
+              {% else %}
+                <div class="muted" style="margin-top:8px;">No image</div>
+              {% endif %}
+
+              <div style="margin-top:8px;">
+                <strong>{{ it["name"] }}</strong>
+                <div class="muted">{{ it["category"] }} | {{ it["color_primary"] }}</div>
+              </div>
+            </div>
           {% endfor %}
-        </ul>
+        </div>
       </div>
     {% endfor %}
   </div>

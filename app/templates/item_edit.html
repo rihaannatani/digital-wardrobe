@@ -1,19 +1,20 @@
 {% extends "base.html" %}
 {% block content %}
+
   <div class="card">
     <div class="row" style="justify-content:space-between; align-items:center;">
       <h2 style="margin:0;">Edit Item</h2>
       <a href="/items">Back</a>
     </div>
 
-    <form method="post" action="/items/{{ item['id'] }}/edit" enctype="multipart/form-data">
-      {% if item["image_path"] %}
-        <div class="card">
-          <div class="muted">Current photo</div>
-          <img src="{{ item['image_path'] }}" style="max-width:220px; border-radius:10px; margin-top:8px;" />
-        </div>
-      {% endif %}
+    {% if item["image_path"] %}
+      <div style="margin-top:12px;">
+        <div class="muted">Current photo</div>
+        <img src="{{ item['image_path'] }}" style="max-width:220px; border-radius:10px; margin-top:8px;" />
+      </div>
+    {% endif %}
 
+    <form method="post" action="/items/{{ item['id'] }}/edit" enctype="multipart/form-data">
       <label>Replace photo (optional)</label>
       <input type="file" name="image" accept="image/*" />
 
@@ -27,8 +28,11 @@
         {% endfor %}
       </select>
 
-      <label>Primary color</label>
+      <label>Primary color (text)</label>
       <input name="color_primary" required value="{{ item['color_primary'] }}" />
+
+      <label>Color hex (optional)</label>
+      <input name="color_hex" value="{{ item['color_hex'] or '' }}" placeholder="#DF3D1A" />
 
       <label>Secondary color (optional)</label>
       <input name="color_secondary" value="{{ item['color_secondary'] or '' }}" />
@@ -47,5 +51,7 @@
         <a href="/items" style="margin-left:10px;">Cancel</a>
       </div>
     </form>
+
   </div>
+
 {% endblock %}
