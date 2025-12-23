@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="row" style="justify-content:space-between; align-items:center;">
+  <h2 style="margin:0;">Review</h2>
+  <div class="row" style="gap:12px; align-items:center;">
+    <a href="/ingest">Back</a>
+    <a href="/items">Wardrobe</a>
+  </div>
+</div>
+
+<div class="card" style="margin-top:12px;">
+  <div class="muted">Photo #{{ photo["id"] }} ({{ photo["decision"] }})</div>
+
+  <img src="{{ photo['image_path'] }}"
+       style="width:100%; max-width:640px; height:360px; object-fit:cover; border-radius:12px; margin-top:10px;" />
+</div>
+
+<div class="card" style="margin-top:12px;">
+  <h3 style="margin-top:0;">Detected items (select what to add)</h3>
+
+  {% if detected|length == 0 %}
+    <p class="muted">No detections yet. Click Accept first, or go back.</p>
+  {% else %}
+    <form method="post" action="/ingest/{{ photo['id'] }}/finalize">
+      {% for d in detected %}
+        <div class="card" style="margin-top:12px;">
+          <div class="row" style="justify-content:space-between; align-items:center;">
+            <label class="row" style="gap:10px; align-items:center;">
+              <input type="checkbox" name="detect_{{ d['id'] }}" checked />
+              <strong style="text-transform:capitalize;">{{ d["category"] }}</strong>
+            </label>
+            <span class="muted">stub</span>
+          </div>
+
+          <label>Name</label>
+          <input name="name_{{ d['id'] }}" value="Detected {{ d['category']|capitalize }}" />
+
+          <label>Category</label>
+          <select name="category_{{ d['id'] }}">
+            {% for c in ["top","bottom","shoes","outerwear","accessory"] %}
+              <option value="{{ c }}" {% if d["category"] == c %}selected{% endif %}>{{ c }}</option>
+            {% endfor %}
+          </select>
+
+          <label>Primary color (text)</label>
+          <input name="color_primary_{{ d['id'] }}" value="unknown" />
+
+          <label>Color hex (optional)</label>
+          <input name="color_hex_{{ d['id'] }}" value="{{ d['extracted_color_hex'] or '' }}" placeholder="#AABBCC" />
+
+          <div class="row" style="gap:12px;">
+            <div style="flex:1;">
+              <label>Warmth (1-5)</label>
+              <input name="warmth_{{ d['id'] }}" type="number" min="1" max="5" value="3" required />
+            </div>
+            <div style="flex:1;">
+              <label>Formality (1-5)</label>
+              <input name="formality_{{ d['id'] }}" type="number" min="1" max="5" value="3" required />
+            </div>
+          </div>
+
+          <label>Notes (optional)</label>
+          <textarea name="notes_{{ d['id'] }}" rows="2"></textarea>
+        </div>
+      {% endfor %}
+
+      <div style="margin-top:14px;">
+        <button type="submit">Add selected to wardrobe</button>
+      </div>
+    </form>
+  {% endif %}
+</div>
+
+{% endblock %}

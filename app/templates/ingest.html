@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="row" style="justify-content:space-between; align-items:center;">
+  <h2 style="margin:0;">Ingest</h2>
+  <div class="row" style="gap:12px; align-items:center;">
+    <a href="/items">Wardrobe</a>
+    <a href="/outfits">Outfits</a>
+  </div>
+</div>
+
+<div class="card" style="margin-top:12px;">
+  <h3 style="margin-top:0;">Upload closet photos</h3>
+  <form method="post" action="/ingest/upload" enctype="multipart/form-data">
+    <input type="file" name="photos" accept="image/*" multiple required />
+    <div style="margin-top:10px;">
+      <button type="submit">Add to queue</button>
+    </div>
+  </form>
+</div>
+
+<div class="card" style="margin-top:12px;">
+  <h3 style="margin-top:0;">Queue</h3>
+
+  {% if not photo %}
+    <p class="muted">No pending photos. Upload a few to start.</p>
+  {% else %}
+    <div class="muted">Pending photo #{{ photo["id"] }}</div>
+
+    <img src="{{ photo['image_path'] }}"
+         style="width:100%; max-width:520px; height:320px; object-fit:cover; border-radius:12px; margin-top:10px;" />
+
+    <div class="row" style="gap:10px; margin-top:12px;">
+      <form method="post" action="/ingest/{{ photo['id'] }}/reject">
+        <button type="submit">Reject</button>
+      </form>
+
+      <form method="post" action="/ingest/{{ photo['id'] }}/accept">
+        <button type="submit">Accept</button>
+      </form>
+
+      <a href="/ingest/{{ photo['id'] }}/review">
+        <button type="button">Review</button>
+      </a>
+    </div>
+
+    {% if detected|length > 0 %}
+      <div class="card" style="margin-top:12px;">
+        <div class="muted">Detected (stub)</div>
+        <div class="row" style="gap:10px; flex-wrap:wrap; margin-top:8px;">
+          {% for d in detected %}
+            <span class="muted" style="border:1px solid rgba(255,255,255,.12); padding:6px 10px; border-radius:999px; text-transform:capitalize;">
+              {{ d["category"] }} {% if d["extracted_color_hex"] %}({{ d["extracted_color_hex"] }}){% endif %}
+            </span>
+          {% endfor %}
+        </div>
+      </div>
+    {% endif %}
+
+  {% endif %}
+</div>
+
+{% endblock %}

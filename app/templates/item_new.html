@@ -1,47 +1,46 @@
 {% extends "base.html" %}
 {% block content %}
-  <div class="card">
-    <div class="row" style="justify-content:space-between; align-items:center;">
-      <h2 style="margin:0;">Add Item</h2>
-      <a href="/items">Back</a>
-    </div>
 
-    <form method="post" action="/items/{{ item['id'] }}/edit" enctype="multipart/form-data">
-      <label>Replace photo (optional)</label>
-      <input type="file" name="image" accept="image/*" />
-
-      <label>Name</label>
-      <input name="name" required value="{{ item['name'] }}" />
-
-      <label>Category</label>
-      <select name="category" required>
-        {% for c in ["top","bottom","shoes","outerwear","accessory"] %}
-          <option value="{{ c }}" {% if item["category"] == c %}selected{% endif %}>{{ c }}</option>
-        {% endfor %}
-      </select>
-
-      <label>Primary color (text)</label>
-      <input name="color_primary" required value="{{ item['color_primary'] }}" />
-
-      <label>Color hex (optional)</label>
-      <input name="color_hex" value="{{ item['color_hex'] or '' }}" placeholder="#DF3D1A" />
-
-      <label>Secondary color (optional)</label>
-      <input name="color_secondary" value="{{ item['color_secondary'] or '' }}" />
-
-      <label>Warmth (1-5)</label>
-      <input name="warmth" type="number" min="1" max="5" value="{{ item['warmth'] }}" required />
-
-      <label>Formality (1-5)</label>
-      <input name="formality" type="number" min="1" max="5" value="{{ item['formality'] }}" required />
-
-      <label>Notes (optional)</label>
-      <textarea name="notes" rows="3">{{ item['notes'] or '' }}</textarea>
-
-      <div style="margin-top:14px;">
-        <button type="submit">Save changes</button>
-        <a href="/items" style="margin-left:10px;">Cancel</a>
-      </div>
-    </form>
+<div class="card">
+  <div class="row" style="justify-content:space-between; align-items:center;">
+    <h2 style="margin:0;">Add Item</h2>
+    <a href="/items">Back</a>
   </div>
+
+  <form method="post" action="/items/new" enctype="multipart/form-data">
+    <label>Name</label>
+    <input name="name" required />
+
+    <label>Category</label>
+    <select name="category" required>
+      {% for c in ["top","bottom","shoes","outerwear","accessory"] %}
+        <option value="{{ c }}">{{ c }}</option>
+      {% endfor %}
+    </select>
+
+    <label>Primary color</label>
+    <input name="color_primary" required />
+
+    <label>Secondary color (optional)</label>
+    <input name="color_secondary" />
+
+    <label>Warmth (1-5)</label>
+    <input name="warmth" type="number" min="1" max="5" value="3" required />
+
+    <label>Formality (1-5)</label>
+    <input name="formality" type="number" min="1" max="5" value="3" required />
+
+    <label>Notes (optional)</label>
+    <textarea name="notes" rows="3"></textarea>
+
+    <label>Photo (optional)</label>
+    <input type="file" name="image" accept="image/*" />
+
+    <div style="margin-top:14px;">
+      <button type="submit">Add Item</button>
+      <a href="/items" style="margin-left:10px;">Cancel</a>
+    </div>
+  </form>
+</div>
+
 {% endblock %}
